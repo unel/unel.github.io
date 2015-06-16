@@ -1,0 +1,63 @@
+- title: skills
+  elements:
+    - title: JavaScript
+      level: 3
+      description: browser only
+      sub-elements:
+        - title: vanilla js
+        - title: jQuery
+        - title: asynhrous requests
+        - title: lasy loading
+        - title: dependencies injections
+
+    - title: HTML
+      level: 2
+    - title: CSS
+      level: 2
+
+- title: additional technologies
+  elements:
+    - title: python
+      level: 1
+      sub-elements:
+        - title: Django
+          description: one love ^__^
+    - title: perl
+      level: 1
+      description: Still hope to perl 6 release :-D
+    - title: postgresql 
+    - title: nginx
+
+- title: interesting
+  elements:
+    - title: languages
+      sub-elements:
+        - title: clojure
+          description: i love scheme, SICP is my bible :-)
+        - title: haskell
+          description: like their type system
+        - title: erlang 
+          description: like their pattern matching and messages processing
+        - title: rust?
+
+    - title: tools
+      sub-elements:
+        - title: vim 
+          description: because vim is better (except sublime, of course)
+        - title: git
+
+    - title: services
+      sub-elements:
+        - title: github 
+        - title: dropbox
+        - title: twitter
+
+    - title: technologies
+      sub-elements:
+        - title: natural language processing
+        - title: translation
+        - title: text recognition
+        - title: image recognition
+        - title: audio recognition
+        - title: artiffical intelligence
+    
