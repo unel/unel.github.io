@@ -1,0 +1,90 @@
+- type: initial
+  title: pre-defined skills :-D
+  
+  skills-impact:
+    - skill: laziness
+      delta: +3
+      
+    - skill: perfectionism
+      comment: paralysis of perfectionist included =)
+      delta: +3
+      
+    - skill: impatience
+      delta: +3 
+     
+
+- type: traineeship
+  title: traineeship in SDN company
+  start-date: 2006-02-02
+  end-date: 2006-04-16
+  
+  skills-impact:
+    - skill: perl
+      delta: +0.3
+      comment: regular expressions, basic logic
+      
+    - skill: javascript
+      delta: +0.3
+      comment: raw (not vanilla!) js. using document.all and other black magic :-D
+      
+    - skill: html
+      delta: +0.3
+      comment: table-based markup, markup for ie7 and opera hmm 12? 
+
+- type: army
+  title: army
+  start-date: 2006-06-29
+  end-date: 2008-06-29
+  
+  skills-impact:
+     - skill: responsibility
+       delta: +1
+       
+     - skill: laziness
+       delta: +1 
+  
+- type: work
+  title: work in SDN company
+  start-date: 2009-09-03
+  end-date: 2013-09-03
+  
+  skills-impact:
+    - skill: perl
+      delta: +0.7
+      comment: packages, requests-handling, orm
+      
+    - skill: javascript
+      delta: +1
+      comment: use vanilla js and jQuery (with plugins)
+      
+    - skill: postgresql
+      delta: +0.5
+      comment: use basic selects, build simple indexes and creating tables
+      
+    - skill: html
+      delta: +1
+      comment: basic html4 markup
+      
+    - skill: css
+      delta: +1
+      comment: basic styling
+    
+- type: work
+  title: work in LinguaLeo company
+  start-date: 2013-10-17
+  
+  skills-impact:
+    - skill: git
+      delta: +0.7
+      comment: git add, commit, fetch, pull, push
+      
+    - skill: javascript
+      delta: +1.7
+      comment: ES5, classes, prototypes and promises, message passing and dependencies injections
+      
+    - skill: agile
+      delta: +1
+      
+    - skill: perfectionism
+      delta: -0.6
+      comment: "done is better than perfect"
