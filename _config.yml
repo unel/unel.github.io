@@ -7,7 +7,6 @@ baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://yourdomain.com" # the base hostname & protocol for your site
 twitter_username: unel86
 github_username:  unel
-vkontakte_username: unel86
 
 # Build settings
 markdown: kramdown
