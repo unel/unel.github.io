@@ -1,17 +1,26 @@
 const swName = 'sw/root';
 
+// common utils;
 function notify(message, ...args) {
 	console.log(`${swName}:: ${message}`, ...args);
 }
 
-self.addEventListener('activate', (event) => {
+// event listeners
+function onActivate(event) {
 	notify('event fired :: activate', event);
-});
+}
 
-self.addEventListener('install', (event) => {
+function onInstall(event) {
 	notify('event fired :: install', event);
-});
+}
 
-self.addEventListener('fetch', (event) => {
+function onFetch(event) {
 	notify('event fired :: fetch', event);
-});
+}
+
+// subsctibers
+self.addEventListener('activate', onActivate);
+self.addEventListener('install', onInstall);
+self.addEventListener('fetch', onFetch);
+
+notify('evaluated', { self });
