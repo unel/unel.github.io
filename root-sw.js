@@ -1,4 +1,4 @@
-const swName = 'sw/modules-provider';
+const swName = 'sw/root';
 
 function notify(message, ...args) {
 	console.log(`${swName}:: ${message}`, ...args);

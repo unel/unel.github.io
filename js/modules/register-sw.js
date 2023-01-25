@@ -1,7 +1,7 @@
 export function registerSW(params) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const { url, scope = '/js/service-workers/', notify = ()=>{} } = params;
+			const { url, scope = '/', notify = ()=>{} } = params;
 			const registration = await navigator.serviceWorker.register(url, {
 				scope,
 			});
