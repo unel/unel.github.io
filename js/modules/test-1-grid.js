@@ -14,7 +14,7 @@ function main(target = document.body) {
 
 	const values = {
 		columnsAmount: 10,
-		rowsAmount: 10,
+		rowsAmount: 3,
 	};
 
 	const inputs = {
@@ -45,7 +45,7 @@ function main(target = document.body) {
 		}
 
 		if (blocksDelta < 0) {
-			for (const block of blocks.slpice(blocksDelta)) {
+			for (const block of blocks.splice(blocksDelta)) {
 				target.removeChild(block);
 			}
 		}
