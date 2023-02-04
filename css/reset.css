@@ -12,7 +12,7 @@ html, body {
 .grid {
 	display: grid;
 	column-gap: var(--columnsGap);
-	row-gap:  var(--rowGap);
-	grid-template-columns: repeat(--columnsAmount, 1fr);
-	grid-template-rows: repeat(--rowsAmount, 1fr);
+	row-gap:  var(--rowsGap);
+	grid-template-columns: repeat(var(--columnsAmount), 1fr);
+	grid-template-rows: repeat(var(--rowsAmount), 1fr);
 }
