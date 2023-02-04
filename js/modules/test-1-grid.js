@@ -12,8 +12,8 @@ function main(target = document.body) {
 
 
 	const form = makeNode('form', {}, [
-		makeNode('input', { name: 'columnsAmount' }),
-		makeNode('input', { name: 'columnsGap' }),
+		makeNode('input', { name: 'columnsAmount', value: 10 }),
+		makeNode('input', { name: 'columnsGap', value: 10 }),
 	]);
 
 	const obs = listenMap({
