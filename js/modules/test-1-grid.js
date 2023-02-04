@@ -1,6 +1,6 @@
 import { makeNode, listenMap, makeStyleClass, injectStyle } from "./dom-utils.js";
 
-function makeLabeledInput({ name, label, value, type }) {
+function makeLabeledInput({ name, label, value, type='text' }) {
 	return makeNode('label', { }, [
 		new Text(label),
 		makeNode('input', { name, value, type })
@@ -18,7 +18,7 @@ function main(target = document.body) {
 	}
 
 	const form = makeNode('form', {}, Object.entries(inputs).map(
-		([name, { value, label }]) => makeLabeledInput({ name, value, label })
+		([name, { value, label, type }]) => makeLabeledInput({ name, value, label, type })
 	));
 
 	const update = (key, value) => {
