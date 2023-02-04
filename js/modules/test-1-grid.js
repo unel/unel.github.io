@@ -1,6 +1,7 @@
 import { makeNode, listenMap } from "./dom-utils.js";
 
 function main() {
+	const body = document.body;
 	const values = {};
 
 	const update = (key, value) => {
@@ -22,10 +23,10 @@ function main() {
 		'columnGap': form.elements.columnGap,
 	}, update);
 
-	document.body.appendChild(form)
+	body.appendChild(form)
 
 	Object.assign(window, { form, obs, values });
 }
 
-// import('/js/modules/test-1-grid.js').then(module => module())
-export default main;
+// import('/js/modules/test-1-grid.js').then(module => module.main())
+export { main }
