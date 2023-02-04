@@ -30,15 +30,10 @@ function qsa(selectors) {
 	return document.querySelectorAll(selectors);
 }
 
-function makeStyleClass(name) {
-	const styleClass = name;
-	const styleNode = makeNode('style');
+function makeStyleClass(styleClass) {
+	const styleNode = makeNode('style', { name: styleClass });
 
-	styleNode.innerHTML = `
-		.${styleClass} {
-
-		}
-	`;
+	styleNode.innerHTML = `.${styleClass} {}`;
 
 	document.head.appendChild(styleNode);
 	return { styleNode, styleClass };

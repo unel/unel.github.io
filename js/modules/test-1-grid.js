@@ -1,13 +1,12 @@
-import { makeNode, listenMap } from "./dom-utils.js";
+import { makeNode, listenMap, makeStyleClass } from "./dom-utils.js";
 
-function main() {
-	const body = document.body;
+function main(target = document.body) {
 	const values = {};
 
 	const update = (key, value) => {
 		values[key] = value;
 
-		body.style.setProperty(`--${key}`, value);
+		target.style.setProperty(`--${key}`, value);
 	}
 
 
@@ -23,7 +22,9 @@ function main() {
 		'columnGap': form.elements.columnGap,
 	}, update);
 
-	body.appendChild(form)
+	makeStyleClass('grid');
+	target.classList.add('grid');
+	target.appendChild(form);
 
 	Object.assign(window, { form, obs, values });
 }
