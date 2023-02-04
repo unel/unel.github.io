@@ -30,8 +30,8 @@ function addChildren(node, children) {
 function makeNode(nodeName = 'div', attributes, children) {
 	const node = mkNode(nodeName);
 
-	addChildren(children);
-	setAttributes(attributes);
+	addChildren(node, children);
+	setAttributes(node, attributes);
 
 	return node;
 }
