@@ -72,4 +72,4 @@ function listenMap(elementsMap, cb) {
 }
 
 
-export { qs, qsa, makeNode, makeStyleClass, listenMap, }
+export { qs, qsa, makeNode, makeStyleClass, listenMap, injectStyle }
