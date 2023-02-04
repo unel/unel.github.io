@@ -1,7 +1,7 @@
 import { makeNode, listenMap, makeStyleClass, injectStyle } from "./dom-utils.js";
 
 function main(target = document.body) {
-	injectStyle('/css/reset.css');
+	injectStyle('/css/grid.css');
 	const values = {};
 
 	const update = (key, value) => {
