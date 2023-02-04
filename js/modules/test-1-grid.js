@@ -33,7 +33,7 @@ function main(target = document.body) {
 	target.classList.add('grid');
 	target.appendChild(form);
 
-	Object.assign(window, { form, obs, values });
+	Object.assign(window, { form, obs });
 }
 
 // import('/js/modules/test-1-grid.js').then(module => module.main())
