@@ -1,25 +1,34 @@
 import { makeNode, listenMap, makeStyleClass, injectStyle } from "./dom-utils.js";
 
+function makeLabeledInput({ name, label, value, type }) {
+	return makeNode('label', { }, [
+		new Text(label),
+		makeNode('input', { name, value, type })
+	]);
+}
+
 function main(target = document.body) {
 	injectStyle('/css/grid.css');
-	const values = {};
+
+	const inputs = {
+		columnsAmount: { label: 'columns', value: 10, type: 'number' },
+		columnsGap: { value: 10, label: 'columns gap', type: 'number' },
+		rowsAmount: { label: 'rows', value: 3, type: 'number' },
+		rowsGap: { value: 10, label: 'rows gap', type: 'number' },
+	}
+
+	const form = makeNode('form', {}, Object.entries(inputs).map(
+		([name, { value, label }]) => makeLabeledInput({ name, value, label })
+	));
 
 	const update = (key, value) => {
-		values[key] = value;
-
 		target.style.setProperty(`--${key}`, value);
 	}
 
-
-	const form = makeNode('form', {}, [
-		makeNode('input', { name: 'columnsAmount', value: 10 }),
-		makeNode('input', { name: 'columnsGap', value: 10 }),
-	]);
-
-	const obs = listenMap({
-		'columnsAmount': form.elements.columnsAmount,
-		'columnsGap': form.elements.columnsGap,
-	}, update);
+	const obs = listenMap(
+		Object.fromEntries(Object.keys(inputs).map(fieldName => [fieldName, form.elements[fieldName]])),
+		update
+	);
 
 	target.classList.add('grid');
 	target.appendChild(form);

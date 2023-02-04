@@ -72,4 +72,5 @@ function listenMap(elementsMap, cb) {
 }
 
 
+// import('/js/modules/dom-utils.js').then(module => Object.assign(window, module))
 export { qs, qsa, makeNode, makeStyleClass, listenMap, injectStyle }
