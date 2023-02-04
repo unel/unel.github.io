@@ -1,4 +1,4 @@
-import { makeNode, listenMap } from "./dom-utils";
+import { makeNode, listenMap } from "./dom-utils.js";
 
 function main() {
 	const values = {};
