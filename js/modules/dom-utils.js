@@ -1,9 +1,9 @@
 function mkNode(nodeName) {
 	if (nodeName === 'fragment') {
-		return new document.createDocumentFragment()
+		return document.createDocumentFragment()
 	}
 
-	return new document.createElement(nodeName);
+	return document.createElement(nodeName);
 }
 
 function setAttributes(node, attributes) {
