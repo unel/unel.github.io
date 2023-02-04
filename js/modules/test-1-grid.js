@@ -1,4 +1,5 @@
 import { makeNode, listenMap, makeStyleClass, injectStyle } from "./dom-utils.js";
+import { times } from './fn-utils';
 
 function makeLabeledInput({ name, label, value, type='text' }) {
 	return makeNode('label', { }, [
@@ -11,6 +12,11 @@ function main(target = document.body) {
 	injectStyle('/css/grid.css');
 	injectStyle('/css/forms.css');
 
+	const values = {
+		columnsAmount: 10,
+		rowsAmount: 10,
+	};
+
 	const inputs = {
 		columnsAmount: { label: 'columns', value: 10, type: 'number' },
 		columnsGap: { value: 10, label: 'columns gap', type: 'number' },
@@ -22,8 +28,27 @@ function main(target = document.body) {
 		([name, { value, label, type }]) => makeLabeledInput({ name, value, label, type })
 	));
 
+	const blocks = [];
 	const update = (key, value) => {
+		values[key] = value;
 		target.style.setProperty(`--${key}`, value);
+
+		const requiredBlocksAmount = values.columnsAmount * values.rowsAmount;
+		const blocksDelta = requiredBlocksAmount - blocks.length;
+
+		if (blocksDelta > 0) {
+			const newBlocks = times(blocksDelta, (n) => makeNode('div'));
+			blocks.push(...newBlocks);
+			target.appendChild(makeNode('fragment', {}, newBlocks))
+
+			return;
+		}
+
+		if (blocksDelta < 0) {
+			for (const block of blocks.slpice(blocksDelta)) {
+				target.removeChild(block);
+			}
+		}
 	}
 
 	const obs = listenMap(

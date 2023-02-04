@@ -1,12 +1,20 @@
-function makeNode(nodeName = 'div', attributes, children) {
-	const node = document.createElement(nodeName);
+function mkNode(nodeName) {
+	if (nodeName === 'fragment') {
+		return new document.createDocumentFragment()
+	}
 
+	return new document.createElement(nodeName);
+}
+
+function setAttributes(node, attributes) {
 	if (attributes) {
 		for (const [name, value] of Object.entries(attributes)) {
 			node.setAttribute(name, value);
 		}
 	}
+}
 
+function addChildren(node, children) {
 	if (children) {
 		if (typeof children === 'string') {
 			node.innerText = children;
@@ -17,6 +25,13 @@ function makeNode(nodeName = 'div', attributes, children) {
 			}
 		}
 	}
+}
+
+function makeNode(nodeName = 'div', attributes, children) {
+	const node = mkNode(nodeName);
+
+	addChildren(children);
+	setAttributes(attributes);
 
 	return node;
 }
@@ -73,4 +88,4 @@ function listenMap(elementsMap, cb) {
 
 
 // import('/js/modules/dom-utils.js').then(module => Object.assign(window, module))
-export { qs, qsa, makeNode, makeStyleClass, listenMap, injectStyle }
+export { qs, qsa, makeNode, setAttributes, addChildren, makeStyleClass, listenMap, injectStyle }
