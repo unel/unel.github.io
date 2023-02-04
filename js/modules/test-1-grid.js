@@ -22,6 +22,7 @@ function main(target = document.body) {
 		columnsGap: { value: 10, label: 'columns gap', type: 'number' },
 		rowsAmount: { label: 'rows', value: 3, type: 'number' },
 		rowsGap: { value: 10, label: 'rows gap', type: 'number' },
+		itemsCount: { value: 30, label: 'items', type: 'number' },
 	}
 
 	const form = makeNode('form', { class: 'top-right' }, Object.entries(inputs).map(
@@ -33,7 +34,7 @@ function main(target = document.body) {
 		values[key] = value;
 		target.style.setProperty(`--${key}`, value);
 
-		const requiredBlocksAmount = values.columnsAmount * values.rowsAmount;
+		const requiredBlocksAmount = values.itemsCount;
 		const blocksDelta = requiredBlocksAmount - blocks.length;
 
 		if (blocksDelta > 0) {
