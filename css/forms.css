@@ -1,0 +1,28 @@
+form {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+
+    row-gap: 8px;
+    padding: 16px;
+
+	border-radius: 8px;
+    box-shadow: 4px 4px 8px silver;
+	border: 1px solid rgba(0,0,0, .15);
+}
+
+form label {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+form input {
+	max-width: 50%;
+}
+
+.top-right {
+	position: absolute;
+	right: 16px;
+	top: 16px;
+}

@@ -9,6 +9,7 @@ function makeLabeledInput({ name, label, value, type='text' }) {
 
 function main(target = document.body) {
 	injectStyle('/css/grid.css');
+	injectStyle('/css/forms.css');
 
 	const inputs = {
 		columnsAmount: { label: 'columns', value: 10, type: 'number' },
@@ -17,7 +18,7 @@ function main(target = document.body) {
 		rowsGap: { value: 10, label: 'rows gap', type: 'number' },
 	}
 
-	const form = makeNode('form', {}, Object.entries(inputs).map(
+	const form = makeNode('form', { class: 'top-right' }, Object.entries(inputs).map(
 		([name, { value, label, type }]) => makeLabeledInput({ name, value, label, type })
 	));
 
