@@ -9,6 +9,6 @@
 	display: grid;
 	column-gap: calc(var(--columnsGap) * 1px);
 	row-gap:  calc(var(--rowsGap) * 1px);
-	grid-template-columns: repeat(var(--columnsAmount), 1fr);
-	grid-template-rows: repeat(var(--rowsAmount), 1fr);
+	grid-template-columns: repeat(var(--columnsAmount), minmax(0, 1fr));
+	grid-template-rows: repeat(var(--rowsAmount), minmax(0, 1fr));
 }
