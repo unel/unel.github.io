@@ -37,7 +37,7 @@ function main(target = document.body) {
 		const blocksDelta = requiredBlocksAmount - blocks.length;
 
 		if (blocksDelta > 0) {
-			const newBlocks = times(blocksDelta, (n) => makeNode('div'));
+			const newBlocks = times(blocksDelta, (n) => makeNode('div', { class: 'grid-item' }));
 			blocks.push(...newBlocks);
 			target.appendChild(makeNode('fragment', {}, newBlocks))
 
