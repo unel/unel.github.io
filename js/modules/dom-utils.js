@@ -39,6 +39,14 @@ function makeStyleClass(styleClass) {
 	return { styleNode, styleClass };
 }
 
+function injectStyle(stylePath) {
+	document.head.appendChild(
+		makeNode('link', {
+			rel: 'stylesheet',
+			href: stylePath,
+		})
+	);
+}
 
 function listen(node, event, cb) {
 	node.addEventListener(event, cb);

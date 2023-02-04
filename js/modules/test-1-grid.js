@@ -1,6 +1,7 @@
-import { makeNode, listenMap, makeStyleClass } from "./dom-utils.js";
+import { makeNode, listenMap, makeStyleClass, injectStyle } from "./dom-utils.js";
 
 function main(target = document.body) {
+	injectStyle('/css/reset.css');
 	const values = {};
 
 	const update = (key, value) => {
@@ -12,17 +13,14 @@ function main(target = document.body) {
 
 	const form = makeNode('form', {}, [
 		makeNode('input', { name: 'columnsAmount' }),
-		makeNode('input', { name: 'columnWidth'}),
-		makeNode('input', { name: 'columnGap' }),
+		makeNode('input', { name: 'columnsGap' }),
 	]);
 
 	const obs = listenMap({
 		'columnsAmount': form.elements.columnsAmount,
-		'columnWidth': form.elements.columnWidth,
-		'columnGap': form.elements.columnGap,
+		'columnsGap': form.elements.columnsGap,
 	}, update);
 
-	makeStyleClass('grid');
 	target.classList.add('grid');
 	target.appendChild(form);
 

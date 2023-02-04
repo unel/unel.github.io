@@ -1,0 +1,17 @@
+// Import partials from `sass_dir` (defaults to `_sass`)
+@import "base";
+
+:root {
+	--columnsGap: 0;
+	--rowsGap: 0;
+	--columnsAmount: 1;
+	--rowsAmount: 1;
+}
+
+.grid {
+	display: grid;
+	column-gap: var(--columnsGap);
+	row-gap:  var(--rowGap);
+	grid-template-columns: repeat(--columnsAmount, 1fr);
+	grid-template-rows: repeat(--rowsAmount, 1fr);
+}
