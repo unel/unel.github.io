@@ -22,20 +22,22 @@ const fileUrlRe = new RegExp('/data/(?<id>.+)$');
 function onFetch(event) {
 	notify('event fired :: fetch', event);
 
-	event.respondWith(async () => {
-		try {
-			const { url, method } = event.request;
-			if (metod !== 'GET' ) {
-				notify('event fired :: fetch : skip by method', { method });
-				return fetch(event.request);
-			}
-			const match = url.match(fileUrlRe);
-			if (!match) {
-				notify('event fired :: fetch : skip by match', { url, match });
-				return fetch(event.request);
-			}
+	const { url, method } = event.request;
+	if (metod !== 'GET' ) {
+		notify('event fired :: fetch : skip by method', { method });
+		return;
+	}
 
-			const id = Number(match.groups.id);
+	const match = url.match(fileUrlRe);
+	if (!match) {
+		notify('event fired :: fetch : skip by match', { url, match });
+		return;
+	}
+
+	const { id } = Number(match.groups);
+
+	event.respondWith((async () => {
+		try {
 			const db = await openDB('data', 1, () => {});
 			const data = await runInTransaction(db, ['files'], 'readonly', ([store]) => {
 				return store.getByKey(id);
@@ -55,7 +57,7 @@ function onFetch(event) {
 		} catch (error) {
 			notify('event fired :: fetch : error', { error });
 		}
-	});
+	})());
 }
 
 function onMessage(event) {
