@@ -23,7 +23,7 @@ function onFetch(event) {
 	notify('event fired :: fetch', event);
 
 	const { url, method } = event.request;
-	if (metod !== 'GET' ) {
+	if (method !== 'GET' ) {
 		notify('event fired :: fetch : skip by method', { method });
 		return;
 	}
