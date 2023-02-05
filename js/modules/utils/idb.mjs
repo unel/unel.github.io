@@ -26,21 +26,59 @@ function createStore(db, storeName, options) {
 	db.createObjectStore(storeName, options)
 }
 
-function makeStoreRequest(store, method, ...args) {
+function callRequest(target, method, ...args) {
 	return new Promise((resolve, reject) => {
-		console.log(`storeRequest ${method}`, args);
-		const request = store[method](...args);
+		console.log(`request ${method}`, args);
+		const request = target[method](...args);
 
 		request.onerror = (event) => {
-			console.log(`storeRequest ${method} error`, { request, event });
+			console.log(`request ${method} error`, { request, event });
 			return reject(event);
 		};
 
 		request.onsuccess = (event) => {
-			console.log(`storeRequest ${method} success`, { request, event })
+			console.log(`request ${method} success`, { request, event })
 			return resolve(event.target.result);
 		};
 	});
+}
+
+class StoreCursorAsyncIterator {
+	constructor({ cursor }) {
+		this._cursor = cursor;
+	}
+
+	getCurrentValue() {
+		if (!this._cursor) {
+			return undefined;
+		}
+
+		return {
+			pkey: this._cursor.primaryKey,
+			key: this._cursor.key,
+			value: this._cursor.value,
+		}
+	}
+
+	async next() {
+		if (this._cursor) {
+			const result = {
+				done: false,
+				value: this.getCurrentValue(),
+			};
+
+			this._cursor = await callRequest(this._cursor, 'continue');
+			return result;
+		}
+
+		return {
+			done: true,
+		};
+	}
+
+	[Symbol.asyncIterator]() {
+		return this;
+	}
 }
 
 class Store {
@@ -51,6 +89,21 @@ class Store {
 
 	getByKey(key) {
 		return this._makeAndKeepRequest('get', key);
+	}
+
+	getAll() {
+		return this._makeAndKeepRequest('getAll');
+	}
+
+	getAllKeys() {
+		return this._makeAndKeepRequest('getAllKeys');
+	}
+
+	async getCursor({ from, to, only, direction = 'next' } = {}) {
+		const range = this._getKeyRange({ from, to, only });
+		const cursor = await this._makeAndKeepRequest('openCursor', range, direction);
+
+		return new StoreCursorAsyncIterator({ cursor });
 	}
 
 	deleteByKey(key) {
@@ -69,8 +122,24 @@ class Store {
 		return Promise.all(this._requestPromises);
 	}
 
+	_getKeyRange({ from, to, only }) {
+		let range = null;
+
+		if (only) {
+			range = IDBKeyRange.only(only);
+		} else if (from && to) {
+			range = IDBKeyRange.bound(from, to);
+		} else if (from) {
+			range = IDBKeyRange.lowerBound(from);
+		} else if (to) {
+			range = IDBKeyRange.upperBound(to);
+		}
+
+		return range;
+	}
+
 	_makeAndKeepRequest(method, ...args) {
-		const requestPromise = makeStoreRequest(this._storeObject, method, ...args);
+		const requestPromise = callRequest(this._storeObject, method, ...args);
 
 		this._requestPromises.push(requestPromise);
 
