@@ -74,7 +74,7 @@ class Store {
 function runInTransaction(db, storeNames, mode, cb) {
 	return new Promise((resolve, reject) => {
 		const transaction = db.transaction(storeNames, mode);
-		const stores = storeNames.map(storeName => new Strore(transaction.objectStore(storeName)))
+		const stores = storeNames.map(storeName => new Store(transaction.objectStore(storeName)))
 
 		transaction.onerror = (event) => {
 			reject(event);
