@@ -73,9 +73,9 @@ function getKeyRange({ from, to, only }) {
 
 function getCursorValue(cursor) {
 	return {
-		pkey: this._cursor.primaryKey,
-		key: this._cursor.key,
-		value: this._cursor.value,
+		pkey: cursor.primaryKey,
+		key: cursor.key,
+		value: cursor.value,
 	};
 }
 
