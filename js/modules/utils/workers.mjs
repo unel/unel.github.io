@@ -4,6 +4,7 @@ function registerSW(params) {
 			const { url, scope = '/', notify = ()=>{} } = params;
 			const registration = await navigator.serviceWorker.register(url, {
 				scope,
+				type: 'module',
 			});
 
 			switch (true) {

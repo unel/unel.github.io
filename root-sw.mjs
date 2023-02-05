@@ -1,3 +1,5 @@
+import { openDB, runInTransaction } from '/js/modules/utils/idb.js';
+
 const swName = 'sw/root';
 
 // common utils;
@@ -21,35 +23,38 @@ function onFetch(event) {
 	notify('event fired :: fetch', event);
 
 	event.respondWith(async () => {
-		const { url, method } = event.request;
-		if (metod !== 'GET' ) {
-			notify('event fired :: fetch : skip by method', { method });
-			return fetch(event.request);
-		}
-		const match = url.match(fileUrlRe);
-		if (!match) {
-			notify('event fired :: fetch : skip by match', { url, match });
-			return fetch(event.request);
-		}
+		try {
+			const { url, method } = event.request;
+			if (metod !== 'GET' ) {
+				notify('event fired :: fetch : skip by method', { method });
+				return fetch(event.request);
+			}
+			const match = url.match(fileUrlRe);
+			if (!match) {
+				notify('event fired :: fetch : skip by match', { url, match });
+				return fetch(event.request);
+			}
 
-		const id = Number(match.groups.id);
-		const idb = await import('/js/modules/utils/idb.js');
-		const db = await idb.openDB('data', 1, () => {});
-		const data = await idb.runInTransaction(db, ['files'], 'readonly', ([store]) => {
-			return store.getByKey(id);
-		});
+			const id = Number(match.groups.id);
+			const db = await openDB('data', 1, () => {});
+			const data = await runInTransaction(db, ['files'], 'readonly', ([store]) => {
+				return store.getByKey(id);
+			});
 
-		if (!data) {
-			notify('event fired :: fetch : skip by data', { data });
-			return fetch(event.request);
+			if (!data) {
+				notify('event fired :: fetch : skip by data', { data });
+				return fetch(event.request);
+			}
+
+			notify('event fired :: fetch : returning response', { data });
+			return new Response(data.content, {
+				headers: new Headers({
+					'Content-Type': data.mimeType
+				}),
+			});
+		} catch (error) {
+			notify('event fired :: fetch : error', { error });
 		}
-
-		notify('event fired :: fetch : returning response', { data });
-		return new Response(data.content, {
-			headers: new Headers({
-				'Content-Type': data.mimeType
-			}),
-		});
 	});
 }
 
