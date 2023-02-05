@@ -1,3 +1,14 @@
+function makePromiseControls() {
+	let resolve, reject;
+
+	const promise = new Promise((rs, rj) => {
+		resolve = rs;
+		reject = rj;
+	});
+
+	return { promise, resolve, reject };
+}
+
 function openDB(dbName, version, initFn) {
 	return new Promise((resolve, reject) => {
 		const request = indexedDB.open(dbName, version);
@@ -43,37 +54,71 @@ function callRequest(target, method, ...args) {
 	});
 }
 
-class StoreCursorAsyncIterator {
-	constructor({ cursor }) {
-		this._cursor = cursor;
+
+function getKeyRange({ from, to, only }) {
+	let range = null;
+
+	if (only) {
+		range = IDBKeyRange.only(only);
+	} else if (from && to) {
+		range = IDBKeyRange.bound(from, to);
+	} else if (from) {
+		range = IDBKeyRange.lowerBound(from);
+	} else if (to) {
+		range = IDBKeyRange.upperBound(to);
 	}
 
-	getCurrentValue() {
-		if (!this._cursor) {
-			return undefined;
-		}
+	return range;
+}
 
-		return {
-			pkey: this._cursor.primaryKey,
-			key: this._cursor.key,
-			value: this._cursor.value,
-		}
+function getCursorValue(cursor) {
+	return {
+		pkey: this._cursor.primaryKey,
+		key: this._cursor.key,
+		value: this._cursor.value,
+	};
+}
+
+class StoreCursorAsyncIterator {
+	constructor({ store, from, to, only, direction = 'next' }) {
+		this._store = store;
+		this._keyRange = getKeyRange({ from, to, only });
+		this._direction = direction;
 	}
 
 	async next() {
-		if (this._cursor) {
-			const result = {
-				done: false,
-				value: this.getCurrentValue(),
-			};
+		this._currentPromiseControls = makePromiseControls();
 
-			this._cursor = await callRequest(this._cursor, 'continue');
-			return result;
+		if (!this._request) {
+			this._request = this.store.openCursor(this._keyRange, this._direction);
+			this._request.onsuccess = this._processCursorSuccess.bind(this);
+			this._request.onerror = this._processCursorError.bind(this);
+		} else {
+			this._currentCursor.continue();
 		}
 
-		return {
-			done: true,
-		};
+		return this._currentPromiseControls.promise;
+	}
+
+	_processCursorSuccess(event) {
+		const cursor = event.target.result;
+
+		if (cursor) {
+			this._currentPromiseControls.resolve({
+				done: false,
+				value: getCursorValue(cursor);
+			});
+		} else {
+			this._currentPromiseControls.resolve({
+				done: true
+			});
+		}
+
+		this._currentCursor = cursor;
+	}
+
+	_processCursorError(event) {
+		this._currentPromiseControls?.reject(event.target.errorCode);
 	}
 
 	[Symbol.asyncIterator]() {
@@ -100,10 +145,7 @@ class Store {
 	}
 
 	async getCursor({ from, to, only, direction = 'next' } = {}) {
-		const range = this._getKeyRange({ from, to, only });
-		const cursor = await this._makeAndKeepRequest('openCursor', range, direction);
-
-		return new StoreCursorAsyncIterator({ cursor });
+		return new StoreCursorAsyncIterator({ store: this._storeObject, from, to, only, direction });
 	}
 
 	deleteByKey(key) {
@@ -120,22 +162,6 @@ class Store {
 
 	awaitAllRequests() {
 		return Promise.all(this._requestPromises);
-	}
-
-	_getKeyRange({ from, to, only }) {
-		let range = null;
-
-		if (only) {
-			range = IDBKeyRange.only(only);
-		} else if (from && to) {
-			range = IDBKeyRange.bound(from, to);
-		} else if (from) {
-			range = IDBKeyRange.lowerBound(from);
-		} else if (to) {
-			range = IDBKeyRange.upperBound(to);
-		}
-
-		return range;
 	}
 
 	_makeAndKeepRequest(method, ...args) {

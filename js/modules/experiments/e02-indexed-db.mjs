@@ -11,7 +11,18 @@ async function main () {
 				mimeType: 'text/javascript',
 			});
 	});
-}
+
+	runInTransaction(db, ['files'], 'readonly', async ([files]) => {
+		const cursor = await files.getCursor();
+		const dataList = [];
+
+		for await (const data of cursor) {
+			console.log('d', data);
+			dataList.push(data);
+		}
+
+		return dataList;
+	});
 
 // // Module.run('experiments/e02-indexed-db')
 export { main }
