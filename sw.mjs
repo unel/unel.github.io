@@ -1,4 +1,4 @@
-import { openDB, runInTransaction } from '/js/modules/utils/idb.js';
+import { openDB, runInTransaction } from '/js/modules/utils/idb.mjs';
 
 const swName = 'sw/root';
 
