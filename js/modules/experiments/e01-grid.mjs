@@ -63,5 +63,6 @@ function main(target = document.body) {
 	Object.assign(window, { form, obs });
 }
 
-// import('/js/modules/experiments/e01-grid.mjs').then(module => module.main())
+// Module.run('experiments/e01-grid')
+// or import('/js/modules/experiments/e01-grid.mjs').then(module => module.main())
 export { main }
