@@ -23,11 +23,13 @@ function onFetch(event) {
 	event.respondWith(async () => {
 		const { url, method } = event.request;
 		if (metod !== 'GET' ) {
-			return;
+			notify('event fired :: fetch : skip by method', { method });
+			return fetch(event.request);
 		}
 		const match = url.match(fileUrlRe);
 		if (!match) {
-			return;
+			notify('event fired :: fetch : skip by match', { url, match });
+			return fetch(event.request);
 		}
 
 		const id = Number(match.groups.id);
@@ -38,9 +40,11 @@ function onFetch(event) {
 		});
 
 		if (!data) {
-			return;
+			notify('event fired :: fetch : skip by data', { data });
+			return fetch(event.request);
 		}
 
+		notify('event fired :: fetch : returning response', { data });
 		return new Response(data.content, {
 			headers: new Headers({
 				'Content-Type': data.mimeType
