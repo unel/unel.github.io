@@ -1,4 +1,4 @@
-export function registerSW(params) {
+function registerSW(params) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { url, scope = '/', notify = ()=>{} } = params;
@@ -25,3 +25,6 @@ export function registerSW(params) {
 		}
 	});
 }
+
+
+export { registerSW }

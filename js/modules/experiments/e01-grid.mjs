@@ -1,5 +1,5 @@
-import { makeNode, listenMap, makeStyleClass, injectStyle } from "./dom-utils.js";
-import { times } from './fn-utils.js';
+import { makeNode, listenMap, makeStyleClass, injectStyle } from "/js/modules/dom.js";
+import { times } from '/js/modules/fn.js';
 
 function makeLabeledInput({ name, label, value, type='text' }) {
 	return makeNode('label', { }, [
@@ -63,5 +63,5 @@ function main(target = document.body) {
 	Object.assign(window, { form, obs });
 }
 
-// import('/js/modules/test-1-grid.js').then(module => module.main())
+// import('/js/modules/experiments/e01-grid.mjs').then(module => module.main())
 export { main }
