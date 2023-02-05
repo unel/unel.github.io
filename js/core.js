@@ -1,5 +1,5 @@
 function getModulePath(name) {
-	return `/js/modules/${name}.js`;
+	return `/js/modules/${name}.mjs`;
 }
 
 function loadModule(name) {

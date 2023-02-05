@@ -1,5 +1,5 @@
-import { makeNode, listenMap, makeStyleClass, injectStyle } from "/js/modules/dom.js";
-import { times } from '/js/modules/fn.js';
+import { makeNode, listenMap, makeStyleClass, injectStyle } from "/js/modules/utils/dom.mjs";
+import { times } from '/js/modules/utils/fn.mjs';
 
 function makeLabeledInput({ name, label, value, type='text' }) {
 	return makeNode('label', { }, [
