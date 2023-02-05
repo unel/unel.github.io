@@ -31,7 +31,7 @@ const Module = (() => {
 	];
 
 	function runExperiment(idx) {
-		runModule(EXPERIMENTS[idx]);
+		runModule(`experiments/${EXPERIMENTS[idx]}`);
 	}
 
 	return {
