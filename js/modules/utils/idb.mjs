@@ -28,14 +28,17 @@ function createStore(db, storeName, options) {
 
 function makeStoreRequest(store, method, ...args) {
 	return new Promise((resolve, reject) => {
+		console.log(`storeRequest ${method}`, args);
 		const request = store[method](...args);
 
 		request.onerror = (event) => {
-			reject(event);
+			console.log(`storeRequest ${method} error`, { request, event });
+			return reject(event);
 		};
 
 		request.onsuccess = (event) => {
-			resolve(event);
+			console.log(`storeRequest ${method} success`, { request, event })
+			return resolve(event);
 		};
 	});
 }
