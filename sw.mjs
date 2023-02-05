@@ -34,18 +34,20 @@ function onFetch(event) {
 		return;
 	}
 
-	const { id } = Number(match.groups);
+	const { id } = match.groups;
 
 	event.respondWith((async () => {
 		try {
 			const db = await openDB('data', 1, () => {});
 			const data = await runInTransaction(db, ['files'], 'readonly', ([store]) => {
-				return store.getByKey(id);
+				return store.getByKey(Number(id));
 			});
 
 			if (!data) {
 				notify('event fired :: fetch : skip by data', { data });
-				return fetch(event.request);
+				return new Response('no data', {
+					status: 404,
+				});
 			}
 
 			notify('event fired :: fetch : returning response', { data });
