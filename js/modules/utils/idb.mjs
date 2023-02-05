@@ -38,7 +38,7 @@ function makeStoreRequest(store, method, ...args) {
 
 		request.onsuccess = (event) => {
 			console.log(`storeRequest ${method} success`, { request, event })
-			return resolve(event);
+			return resolve(event.target.result);
 		};
 	});
 }
@@ -65,6 +65,10 @@ class Store {
 		return this._makeAndKeepRequest('put', data);
 	}
 
+	awaitAllRequests() {
+		return Promise.all(this._requestPromises);
+	}
+
 	_makeAndKeepRequest(method, ...args) {
 		const requestPromise = makeStoreRequest(this._storeObject, method, ...args);
 
@@ -74,21 +78,21 @@ class Store {
 	}
 }
 
-function runInTransaction(db, storeNames, mode, cb) {
-	return new Promise((resolve, reject) => {
+function runInTransaction(db, storeNames, mode, fn) {
+	return new Promise(async (resolve, reject) => {
 		const transaction = db.transaction(storeNames, mode);
 		const stores = storeNames.map(storeName => new Store(transaction.objectStore(storeName)))
 
-		transaction.onerror = (event) => {
-			reject(event);
-		};
-		transaction.onsuccess = (event) => {
-			resolve(event);
-		};
-
-		cb(stores);
-
+		const result = await fn(stores);
 		transaction.commit();
+
+		try {
+			await Promise.all(stores.map(store => store.awaitAllRequests()));
+			return resolve(result);
+
+		} catch (e) {
+			return reject(e);
+		}
 	})
 }
 

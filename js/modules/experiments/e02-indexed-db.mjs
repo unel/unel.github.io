@@ -6,7 +6,6 @@ async function main () {
 	});
 
 	runInTransaction(db, ['files'], 'readwrite', ([filesStorage]) => {
-			debugger;
 			filesStorage.add({
 				content: `alert('hello, world!');`,
 				mimeType: 'text/javascript',
