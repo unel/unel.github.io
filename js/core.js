@@ -1,24 +1,32 @@
-function getModulePath(name) {
-	return `/js/modules/${name}.mjs`;
-}
+const Module = (() => {
+	function getModulePath(name) {
+		return `/js/modules/${name}.mjs`;
+	}
 
-function loadModule(name) {
-	return import(getModulePath(name));
-}
+	function loadModule(name) {
+		return import(getModulePath(name));
+	}
 
-function exposeObject(object) {
-	Object.assign(window, object);
-}
+	function exposeObject(object) {
+		Object.assign(window, object);
+	}
 
-function callObject(module) {
-	return (module.main || module.default)?.();
-}
+	function callObject(module) {
+		return (module.main || module.default)?.();
+	}
 
 
-function exposeModule(name) {
-	loadModule(name).then(exposeObject)
-}
+	function exposeModule(name) {
+		return loadModule(name).then(exposeObject);
+	}
 
-function runModule(name) {
-	loadModule(name).then(callObject)
-}
+	function runModule(name) {
+		return loadModule(name).then(callObject);
+	}
+
+	return {
+		getPath: getModulePath,
+		expose: exposeModule,
+		run: runModule,
+	};
+})()
