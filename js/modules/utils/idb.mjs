@@ -106,11 +106,11 @@ class StoreCursorAsyncIterator {
 		if (cursor) {
 			this._currentPromiseControls.resolve({
 				done: false,
-				value: getCursorValue(cursor);
+				value: getCursorValue(cursor),
 			});
 		} else {
 			this._currentPromiseControls.resolve({
-				done: true
+				done: true,
 			});
 		}
 
