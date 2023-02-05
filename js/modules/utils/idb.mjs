@@ -90,7 +90,7 @@ class StoreCursorAsyncIterator {
 		this._currentPromiseControls = makePromiseControls();
 
 		if (!this._request) {
-			this._request = this.store.openCursor(this._keyRange, this._direction);
+			this._request = this._store.openCursor(this._keyRange, this._direction);
 			this._request.onsuccess = this._processCursorSuccess.bind(this);
 			this._request.onerror = this._processCursorError.bind(this);
 		} else {
