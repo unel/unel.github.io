@@ -14,8 +14,39 @@ function onInstall(event) {
 	notify('event fired :: install', event);
 }
 
+
+const fileUrlRe = new RegExp('/data/(?<id>.+)$');
+
 function onFetch(event) {
 	notify('event fired :: fetch', event);
+
+	event.respondWith(async () => {
+		const { url, method } = event.request;
+		if (metod !== 'GET' ) {
+			return;
+		}
+		const match = url.match(fileUrlRe);
+		if (!match) {
+			return;
+		}
+
+		const id = Number(match.groups.id);
+		const idb = await import('/js/modules/utils/idb.js');
+		const db = await idb.openDB('data', 1, () => {});
+		const data = await idb.runInTransaction(db, ['files'], 'readonly', ([store]) => {
+			return store.getByKey(id);
+		});
+
+		if (!data) {
+			return;
+		}
+
+		return new Response(data.content, {
+			headers: new Headers({
+				'Content-Type': data.mimeType
+			}),
+		});
+	});
 }
 
 function onMessage(event) {
