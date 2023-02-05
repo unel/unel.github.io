@@ -5,14 +5,14 @@ async function main () {
 		createStore(db, 'files', { autoIncrement: true });
 	});
 
-	runInTransaction(db, ['files'], 'readwrite', ([filesStorage]) => {
+	await runInTransaction(db, ['files'], 'readwrite', ([filesStorage]) => {
 			filesStorage.add({
 				content: `alert('hello, world!');`,
 				mimeType: 'text/javascript',
 			});
 	});
 
-	runInTransaction(db, ['files'], 'readonly', async ([files]) => {
+	const data = await runInTransaction(db, ['files'], 'readonly', async ([files]) => {
 		const cursor = await files.getCursor();
 		const dataList = [];
 
