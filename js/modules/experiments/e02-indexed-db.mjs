@@ -7,7 +7,7 @@ async function main () {
 
 	await runInTransaction(db, ['files'], 'readwrite', ([filesStorage]) => {
 			filesStorage.add({
-				content: `alert('hello, world!');`,
+				content: `alert('hello, world!11');`,
 				mimeType: 'text/javascript',
 			});
 	});
@@ -23,6 +23,21 @@ async function main () {
 
 		return dataList;
 	});
+
+	const keys = await runInTransaction(db, ['files'], 'readonly', async ([files]) => {
+		const cursor = await files.getKeyCursor();
+		const dataList = [];
+
+		for await (const data of cursor) {
+			console.log('d', data);
+			dataList.push(data);
+		}
+
+		return dataList;
+	});
+
+	console.log('experiment', data, keys);
+}
 
 // // Module.run('experiments/e02-indexed-db')
 export { main }

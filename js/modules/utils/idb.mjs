@@ -79,7 +79,7 @@ function getCursorValue(cursor) {
 	};
 }
 
-class StoreCursorAsyncIterator {
+class BaseStoreCursorAsyncIterator {
 	constructor({ store, from, to, only, direction = 'next' }) {
 		this._store = store;
 		this._keyRange = getKeyRange({ from, to, only });
@@ -90,7 +90,7 @@ class StoreCursorAsyncIterator {
 		this._currentPromiseControls = makePromiseControls();
 
 		if (!this._request) {
-			this._request = this._store.openCursor(this._keyRange, this._direction);
+			this._request = this._cursorRequest(this._keyRange, this._direction);
 			this._request.onsuccess = this._processCursorSuccess.bind(this);
 			this._request.onerror = this._processCursorError.bind(this);
 		} else {
@@ -106,7 +106,7 @@ class StoreCursorAsyncIterator {
 		if (cursor) {
 			this._currentPromiseControls.resolve({
 				done: false,
-				value: getCursorValue(cursor),
+				value: this._getCursorData(cursor),
 			});
 		} else {
 			this._currentPromiseControls.resolve({
@@ -123,6 +123,33 @@ class StoreCursorAsyncIterator {
 
 	[Symbol.asyncIterator]() {
 		return this;
+	}
+}
+
+class StoreCursorAsyncIterator extends BaseStoreCursorAsyncIterator {
+	_cursorRequest(...args) {
+		return this._store.openCursor(...args);
+	}
+
+	_getCursorData(cursor) {
+		return {
+			pkey: cursor.primaryKey,
+			key: cursor.key,
+			value: cursor.value,
+		};
+	}
+}
+
+class StoreKeyCursorAsyncIterator extends BaseStoreCursorAsyncIterator {
+	_cursorRequest(...args) {
+		return this._store.openKeyCursor(...args);
+	}
+
+	_getCursorData(cursor) {
+		return {
+			pkey: cursor.primaryKey,
+			key: cursor.key,
+		};
 	}
 }
 
@@ -146,6 +173,10 @@ class Store {
 
 	async getCursor({ from, to, only, direction = 'next' } = {}) {
 		return new StoreCursorAsyncIterator({ store: this._storeObject, from, to, only, direction });
+	}
+
+	async getKeyCursor({ from, to, only, direction = 'next' } = {}) {
+		return new StoreKeyCursorAsyncIterator({ store: this._storeObject, from, to, only, direction });
 	}
 
 	deleteByKey(key) {
