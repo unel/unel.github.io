@@ -24,9 +24,20 @@ const Module = (() => {
 		return loadModule(name).then(callObject);
 	}
 
+	const EXPERIMENTS = [
+		'e00-sw',
+		'e01-grid',
+		'e02-indexed-db',
+	];
+
+	function runExperiment(idx) {
+		runModule(EXPERIMENTS[idx]);
+	}
+
 	return {
 		getPath: getModulePath,
 		expose: exposeModule,
 		run: runModule,
+		runExperiment,
 	};
 })()
