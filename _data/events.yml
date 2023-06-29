@@ -72,6 +72,7 @@
 - type: work
   title: work in LinguaLeo company
   start-date: 2013-10-17
+  end-date: 2019-04-01
   
   skills-impact:
     - skill: git
@@ -88,3 +89,42 @@
     - skill: perfectionism
       delta: -0.6
       comment: "done is better than perfect"
+
+- type: work
+  title: work in KouchTV
+  start-date: 2019-04-01
+  end-date: 2021-04-01
+  
+  skills-impact:
+    - skill: d3js
+      delta: +0.1
+
+    - skill: mobx
+      delta: +1
+
+    - skill: mobx-state-tree
+      delta: -0.1
+      comment: good, but not sure
+
+    - skill: working with external api
+      delta: +2
+      comment: working with twitch api quite challenging
+      
+    - skill: agile
+      delta: +1
+
+- type: work
+  title: work in LeroyMerlin Vostok
+  start-date: 2021-04-01
+  end-date: 2023-03-30
+  
+  skills-impact:
+    - skill: support legacy systems
+      delta: +2
+
+    - skill: perfectionism
+      delta: -1
+
+    - skill: agile
+      delta: +1
+  
